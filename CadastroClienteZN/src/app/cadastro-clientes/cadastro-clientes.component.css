@@ -1,0 +1,56 @@
+.clientes-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+    border-bottom: 1px solid #d9dad9;
+}
+
+
+.corBotao{
+    background-color: #005e98;
+    border-color:#005e98;
+    border-radius: 5px;
+}
+
+
+input[type="search"] {
+    border-color: #005e98;
+    border-radius: 5px;
+}
+
+.filter-container {
+    text-align: center;
+}
+
+:host>>>  .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active{
+    background-color:#005e98;
+    border-color: #005e98;
+}
+
+.p-col-12.p-md-9 {
+    padding: 13px !important;
+}
+
+.ui-panel-content {
+    padding: 1em;
+}
+
+.dark-theme :host ::ng-deep .titulos-details,
+.dark-theme :host ::ng-deep .car-detail {
+    border-bottom: 1px solid #191919;
+}
+
+@media (max-width: 1024px) {
+    .clientes-details img {
+          width: 75px;
+    }
+
+    .filter-container {
+        text-align: left;
+    }
+}
+
+a.ui-paginator-page.ui-paginator-element.ui-state-default.ui-corner-all.ui-state-active.ng-star-inserted{
+    background-attachment: red;
+}

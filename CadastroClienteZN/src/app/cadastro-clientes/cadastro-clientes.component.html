@@ -1,0 +1,134 @@
+<p-dataView #dv  [value]="clientes" [paginator]="true" [rows]="5" paginatorPosition="top" filterBy="nome" 
+  [sortField]="sortField" [sortOrder]="sortOrder">
+  <p-header class="corBotao" >
+    <div class="ui-helper-clearfix">
+      <div class="p-grid">
+        <div class="p-col-12 p-md-4">
+          <p-dropdown  class="corBotao"  [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Ordernar Por"
+            (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+        </div>
+        <div class="p-col-6 p-md-4 filter-container">
+          <div style="position:relative">
+            <input type="search" pInputText placeholder="Procure pelo nome"
+              (input)="dv.filter($event.target.value,'contains')">
+          </div>
+        </div>
+        <div class="p-col-6 p-md-4" style="text-align:right">
+          <p-button icon="pi pi-plus" (click)="addCliente($event)"></p-button>
+        </div>
+      </div>
+    </div>
+  </p-header>
+
+
+  <ng-template let-clientes pTemplate="listItem">
+    <div class="p-col-12">
+      <div class="clientes-details">
+        <div _ngcontent-pps-c10>         
+          <div _ngcontent-pps-c1 class="p-grid mt-2 ng-tns-c62-2">          
+            <div style="width: 100%" class="p-col-12">Nome: <b>{{clientes.nome}}</b></div>
+            <div style="width: 100%" class="p-col-12">Cpf: <b>{{clientes.cpf}}</b></div>    
+            <div style="width: 100%" class="p-col-12">Profissão: <b>{{clientes.profissao}}</b></div>   
+            <div style="width: 100%" class="p-col-12">Telefone: <b>{{clientes.telefone}}</b></div>      
+            <div style="width: 100%" class="p-col-12">Data Criação: <b>{{clientes.dataCriacao}}</b></div>   
+          </div>
+        </div>
+        <button pButton type="button" icon="pi pi-search" class="ui-button-icon-left ui-clickable corBotao" (click)="editCliente($event, clientes)"
+        ></button>
+      </div>
+    </div>    
+  </ng-template> 
+</p-dataView>
+
+
+
+<!-- //MODAL EDIÇÃO -->
+<p-dialog  (onHide)="listarCadastros()" *ngIf="clienteSelecionado" header="Editar Cliente - {{clienteSelecionado.idCadastroCliente}}" [(visible)]="displayPanelEdit" [modal]="true" [style]="{width: '30vw'}" [maximizable]="true" [baseZIndex]="10000"
+    [draggable]="true" [resizable]="true">
+
+    <form #regForm="ngForm">   
+    <div class="ui-fluid" >
+      <div class="p-field p-grid" >
+        <label for="idCliente" class="p-col-12 p-md-3">ID:</label>
+        <div class="p-col-12 p-md-9">
+          <input [readonly]="true" id="idCliente"  type="text"  placeholder={{clienteSelecionado.idCadastroCliente}}  name="idCliente" [(ngModel)]="clienteSelecionado.idCadastroCliente"> 
+        </div>
+    </div>
+
+      <div class="p-field p-grid" >
+          <label for="nomeCliente" class="p-col-12 p-md-3">Nome:</label>
+          <div class="p-col-12 p-md-9">
+              <input id="nomeCliente"  type="text"  placeholder={{clienteSelecionado.nome}}  name="nomeCliente" [(ngModel)]="clienteSelecionado.nome"> 
+          </div>
+      </div>
+      <div class="p-field p-grid">
+          <label for="cpfCliente" class="p-col-12 p-md-3">CPF:</label>
+          <div class="p-col-12 p-md-9">
+              <input id="cpfCliente" type="text"  placeholder={{clienteSelecionado.cpf}}  name="cpfCliente" [(ngModel)]="clienteSelecionado.cpf"> 
+          </div>
+      </div>
+
+      <div class="p-field p-grid">
+        <label for="profissaoCliente" class="p-col-12 p-md-3">Profissão:</label>
+        <div class="p-col-12 p-md-9">
+            <input id="profissaoCliente" type="text"  placeholder={{clienteSelecionado.profissao}}  name="profissaoCliente" [(ngModel)]="clienteSelecionado.profissao"> 
+        </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="telefoneCliente" class="p-col-10 p-md-3">Telefone:</label>
+      <div class="p-col-12 p-md-9">
+          <input id="telefoneCliente" type="text"  placeholder={{clienteSelecionado.telefone}} name="telefoneCliente"  [(ngModel)]="clienteSelecionado.telefone">  
+      </div>
+  </div>
+    <div class="p-field p-grid" >
+      <label for="dataCriacaoCliente" class="p-col-10 p-md-3">Data Criação:</label>
+      <div class="p-col-12 p-md-9">
+        <input [readonly]="true" id="dataCriacaoCliente"  type="text"  placeholder={{clienteSelecionado.dataCriacao}}  name="dataCriacaoCliente" [(ngModel)]="clienteSelecionado.dataCriacao"> 
+      </div>
+  </div>
+  </div>
+  <button   type="submit" pButton icon="pi pi-check"   (click)="onSalvar(regForm)" label="Salvar"></button>
+  <p-button type="submit" (click)="deletarCliente(regForm)" icon="pi pi-times" label="Delete"></p-button>
+</form> 
+ </p-dialog>
+
+
+
+ <!-- //MODAL ADD CLIENTE -->
+<p-dialog   header="Adicionar Cliente"   [(visible)]="displayPanelAdd" [modal]="true" [style]="{width: '30vw'}" [maximizable]="true" [baseZIndex]="10000"
+[draggable]="true" [resizable]="true">
+
+<form #AddForm="ngForm"  (ngSubmit)="onAdicionar(AddForm)">   
+<div class="ui-fluid" >
+  <div class="p-field p-grid" >
+      <label for="nomeCliente" class="p-col-12 p-md-3">Nome:</label>
+      <div class="p-col-12 p-md-9">
+          <input id="nomeCliente"  type="text"  placeholder="Nome"  name="nomeCliente" [(ngModel)]="AddForm.Nome"> 
+      </div>
+  </div>
+  <div class="p-field p-grid">
+      <label for="cpfCliente" class="p-col-12 p-md-3">CPF:</label>
+      <div class="p-col-12 p-md-9">
+          <input id="cpfCliente" type="text"  placeholder="CPF"  name="cpfCliente" [(ngModel)]="AddForm.Cpf"> 
+      </div>
+  </div>
+
+  <div class="p-field p-grid">
+    <label for="profissaoCliente" class="p-col-12 p-md-3">Profissão:</label>
+    <div class="p-col-12 p-md-9">
+        <input id="profissaoCliente" type="text"  placeholder="Profissão"  name="profissaoCliente" [(ngModel)]="AddForm.Profissao"> 
+    </div>
+</div>
+
+<div class="p-field p-grid">
+  <label for="telefoneCliente" class="p-col-10 p-md-3">Telefone:</label>
+  <div class="p-col-12 p-md-9">
+      <input id="telefoneCliente" type="text"  placeholder="Telefone" name="telefoneCliente"  [(ngModel)]="AddForm.Telefone">  
+  </div>
+</div>
+</div>
+<button type="submit" pButton icon="pi pi-check"   label="Adicionar"></button>
+</form> 
+</p-dialog>
+

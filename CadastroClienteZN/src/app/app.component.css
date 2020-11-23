@@ -1,0 +1,14 @@
+
+.ui-paginator-page{
+    background-color:#7286d5 !important;  
+    border-color: #6d7fcc; 
+  }
+  /* .ui-paginator{ // for navigation bar
+      background-color:gray !important;   
+  } */
+
+  .ui-paginator-pages .ui-paginator-page.ui-state-active{
+    background-color:#7286d5 !important;  
+    border-color: #6d7fcc;
+
+  }
